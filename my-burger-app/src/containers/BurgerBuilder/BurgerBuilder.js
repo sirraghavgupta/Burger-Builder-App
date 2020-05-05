@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import Aux from '../../hoc/Aux';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
-
+import Modal from '../../components/UI/Modal/Modal'
+import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 
 
 // name global constants in capital - convention.
@@ -23,7 +24,8 @@ class BurgerBuilder extends Component{
             bacon : 0
         },
         totalPrice : 4,
-        purchasable : false
+        purchasable : false,
+        purchasing : false
     }
 
     updatePurchaseState = (ingredients) => {
@@ -32,6 +34,17 @@ class BurgerBuilder extends Component{
         this.setState({ purchasable : purchaseState });
     }   
 
+    /**
+     * basically, we want to arrow function here because we need to refer to 
+     * this. now, we refer to this in render() also but we use normal syntax 
+     * there. the issue comes when the method is triggered by an event. then 
+     * there is a problem in using the this. so, its preferred to use arrow
+     * function always so that we dont miss anything. 
+     */
+    purchaseHandler = () => {
+        this.setState( { purchasing : true } );
+    }
+    
     addIngredientHandler = (type) => {
         const state = {...this.state};
         state.ingredients[type] += 1;
@@ -67,13 +80,27 @@ class BurgerBuilder extends Component{
         
         return (
             <Aux>
+                {/* // one method is this. 
+                {this.state.purchasing ? 
+                    <Modal>
+                        <OrderSummary ingredients = {this.state.ingredients}/>
+                    </Modal>
+                    : null
+                } */}
+
+                <Modal show = { this.state.purchasing }>
+                    <OrderSummary ingredients = {this.state.ingredients}/>
+                </Modal>
+
                 <Burger ingredients = { this.state.ingredients} />
+
                 <BuildControls 
                     ingredientAdded = { this.addIngredientHandler }
                     ingredientRemoved = { this.removeIngredientHandler }
                     disabled = { disabledInfo }
                     price = { this.state.totalPrice }
                     purchasable = { this.state.purchasable }
+                    ordered = { this.purchaseHandler } 
                 />
             </Aux>
         );
