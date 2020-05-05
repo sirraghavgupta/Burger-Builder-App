@@ -17,8 +17,7 @@ const burger = (props) => {
     
     // flatten it. 
     transformedIngredients = transformedIngredients.flat();
-    console.log(transformedIngredients);
-
+    
     if(transformedIngredients.length === 0)
         transformedIngredients = <p>Please add some ingredients</p>
 
