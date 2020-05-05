@@ -24,8 +24,7 @@ class BurgerBuilder extends Component{
             bacon : 0
         },
         totalPrice : 4,
-        purchasable : false,
-        purchasing : false
+        purchasable : false
     }
 
     updatePurchaseState = (ingredients) => {
@@ -41,13 +40,7 @@ class BurgerBuilder extends Component{
      * there is a problem in using the this. so, its preferred to use arrow
      * function always so that we dont miss anything. 
      */
-    purchaseHandler = () => {
-        this.setState( { purchasing : true } );
-    }
-    
-    purchaseCancelHandler = () => {
-        this.setState( { purchasing : false } );
-    }
+
 
     addIngredientHandler = (type) => {
         const state = {...this.state};
@@ -92,8 +85,7 @@ class BurgerBuilder extends Component{
                     : null
                 } */}
 
-                <Modal show = { this.state.purchasing }
-                       modalClosed = { this.purchaseCancelHandler }>
+                <Modal show = { this.props.purchasing }>
                     <OrderSummary ingredients = {this.state.ingredients}/>
                 </Modal>
 
@@ -105,7 +97,7 @@ class BurgerBuilder extends Component{
                     disabled = { disabledInfo }
                     price = { this.state.totalPrice }
                     purchasable = { this.state.purchasable }
-                    ordered = { this.purchaseHandler } 
+                    ordered = { this.props.order }      
                 />
             </Aux>
         );
