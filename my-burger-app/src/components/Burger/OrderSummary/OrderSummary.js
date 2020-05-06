@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Aux from '../../../hoc/Aux';
 import Button from '../../UI/Button/Button';
 
-const orderSummary = (props) => {
 
-    const ingredientSummary = 
-        Object.entries(props.ingredients)
+class OrderSummary extends Component{
+
+    componentWillUpdate = () => {
+        console.log("order summary will update");
+    }
+
+    render(){
+        const ingredientSummary = 
+        Object.entries(this.props.ingredients)
                  .map( ([label, qty]) => {
                     return <li key = { label }> 
                                 <span style = {{textTransform : 'capitalize'}}>
@@ -23,17 +29,18 @@ const orderSummary = (props) => {
                 { ingredientSummary }
             </ul>
 
-    <p><strong>Total price : {props.price.toFixed(2)}</strong></p>
+            <p><strong>Total price : {this.props.price.toFixed(2)}</strong></p>
 
             <p>Continue to Checkout?</p>
 
-            <Button clicked = { props.cancelled }
+            <Button clicked = { this.props.cancelled }
                     btnType = 'Success'>CANCEL</Button>
 
-            <Button clicked = { props.continued }
+            <Button clicked = { this.props.continued }
                     btnType = 'Danger'>CONTINUE</Button>
         </Aux>
-    );
+        );
+    }
 }
 
-export default orderSummary;
+export default OrderSummary;
