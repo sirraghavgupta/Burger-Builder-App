@@ -7,7 +7,7 @@ const toolbar = (props) => {
 
     return (
         <header  className = { classes.Toolbar } >
-            <div>MENU</div>
+            <div onClick = { props.showDrawer } >MENU</div>
             <div className = {classes.Logo}>
                 <Logo/>
             </div>
