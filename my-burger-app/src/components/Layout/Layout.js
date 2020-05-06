@@ -14,14 +14,21 @@ class Layout extends Component {
         this.setState({ showSideDrawer : false });
     }
 
-    showSideDrawerHandler = () => {
-        this.setState({ showSideDrawer : true });
+    /**
+     * this is a better way of setting the state due to the asynchronous
+     * nature of setState() method. here, prevState will be automatically 
+     * passed in the arrow function. this is recommended. 
+     */
+    toggleSideDrawerHandler = () => {
+        this.setState( (prevState) => {
+            return { showSideDrawer : !prevState.showSideDrawer }
+        } );
     }
 
     render() {
         return (
             <Aux>   
-                <Toolbar showDrawer = { this.showSideDrawerHandler }/>
+                <Toolbar toggleDrawer = { this.toggleSideDrawerHandler }/>
                 <SideDrawer closeDrawer = { this.closeSideDrawerHandler }
                             showDrawer = { this.state.showSideDrawer } />
 
