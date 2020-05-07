@@ -5,6 +5,7 @@ import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal'
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 
+import axios from '../../Axios/instance1';
 
 // name global constants in capital - convention.
 const INGREDIENT_PRICE = {
@@ -50,7 +51,42 @@ class BurgerBuilder extends Component{
     }
 
     purchaseContinueHandler = () => {
-        alert("u made a purchase.");
+        console.log("ordering the item");
+
+        const order = {
+            ingredients : this.state.ingredients,
+            /**
+             * note that in prod env, we never send the price like this. 
+             * we will evaluate it on the server again. 
+             * as the customer might be manipulating it, so we cant trust that.
+             * ---- very important. 
+             */
+            price : this.state.totalPrice,
+            customer : {
+                name : 'raghu',
+                address : {
+                    street : 'testt streey 777',
+                    pincode : '99987'
+                },
+                email : 'test@myburgerapp.com'
+            },
+            paymentMethod : 'cash',
+            deliveryMethod : 'fastest'
+        }
+        /**
+         * its a syntax for firbase that we need to send the requst to 
+         * node_name.json. 
+         * .json has to be appended always. 
+         * it will be different for some other service provider. 
+         * 
+         * it will basically create a node orders and then store the data inside 
+         * that in nested form as json objects.
+         * it will maintain a list inside orders and assign a unique id to 
+         * all the entries, automatically. 
+         */
+        axios.post("/orders.json", order)
+             .then( response => console.log(response))
+             .catch( error => console.log(error));
     }
 
     addIngredientHandler = (type) => {
