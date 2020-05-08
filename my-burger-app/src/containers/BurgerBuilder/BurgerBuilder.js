@@ -6,6 +6,8 @@ import Modal from '../../components/UI/Modal/Modal'
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import axios from '../../Axios/instance1';
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+
 
 // name global constants in capital - convention.
 const INGREDIENT_PRICE = {
@@ -172,4 +174,4 @@ class BurgerBuilder extends Component{
     }
 }
 
-export default BurgerBuilder;
+export default withErrorHandler(BurgerBuilder, axios);
