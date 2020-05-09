@@ -91,10 +91,12 @@ class BurgerBuilder extends Component{
          */
         axios.post("/orders.json", order)
              .then( response => {
+                        console.log("inside the then block");
                         console.log(response);
                         this.setState( { loading:false, purchasing:false } );
                     })
              .catch( error => {
+                        console.log("inside the catch block");
                         console.log(error);
                         this.setState( { loading:false, purchasing:false } );
                     });

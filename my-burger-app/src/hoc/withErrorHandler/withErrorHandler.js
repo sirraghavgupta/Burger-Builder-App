@@ -10,19 +10,43 @@ const withErrorHandler = (WrappedComponent, axios) => {
             error : null
         }
 
-        componentDidMount = () => {
+        componentWillMount = () => {    
+            /**
+             * whenever we send a request, first it comes to this place. 
+             * here we can modify that, add some headers etc. 
+             * then we return thre request to send and if there is any error,
+             * then it goes to second error wala method. 
+             */
+
             axios.interceptors.request.use( request => {
-                console.log("inside first method.");
+                console.log("inside request success method.");
                 this.setState({error : null});
                 return request;
             }, error => {
-                console.log("inside second method");
-                return Promise.eject(error);
+                console.log("inside request failure method");
+                // it also redirects it to the catch block.
+                return Promise.reject(error);
             });
 
-            axios.interceptors.response.use( response => response, 
+            /**
+             * now, whenever a response comes, it lands here. 
+             * we can modify it here. and then we return thr response to the 
+             * then block . 
+             * if there is any response other than 2XX codem it goes to the 
+             * error wala method. and there we reject it to the catch block. 
+             */
+            axios.interceptors.response.use( response => {
+                console.log("inside the success response method");
+                return response;
+            }, 
                 error => {
+                    console.log("inside the faliure response block");
                     this.setState({ error : error });
+                    /**
+                     * if i dont write this, it will return to the then block, 
+                     * now, it will go to the catch block. 
+                     */
+                    return Promise.reject(error);
             });
         }
 
