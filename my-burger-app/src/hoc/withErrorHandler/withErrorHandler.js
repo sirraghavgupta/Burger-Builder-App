@@ -10,6 +10,25 @@ const withErrorHandler = (WrappedComponent, axios) => {
             error : null
         }
 
+        /**
+         * now, as this is a higher order component, we will use it 
+         * multiple times when we use it. and everytime it creates a 
+         * new class which has interceptor objects associated with that.
+         * now, when we unmmount that component, we need to remove these 
+         * interceptor objects so as to prevent memory leak.
+         */
+        componentWillUnmount = () => {
+            /**
+             * basically it maintains a list of interceptors, so we get the
+             * id printed there. as we have one one interceptor of both 
+             * request and response type, we get 0 0 printed there on the 
+             * console. 
+             */
+            // console.log("unmounting withErrorHandler ", this.reqInterceptor, this.resInterceptor);
+            axios.interceptors.request.eject(this.reqInterceptor);
+            axios.interceptors.response.eject(this.resInterceptor);
+        }
+
         componentWillMount = () => {    
             /**
              * whenever we send a request, first it comes to this place. 
@@ -18,7 +37,7 @@ const withErrorHandler = (WrappedComponent, axios) => {
              * then it goes to second error wala method. 
              */
 
-            axios.interceptors.request.use( request => {
+            this.reqInterceptor = axios.interceptors.request.use( request => {
                 console.log("inside request success method.");
                 this.setState({error : null});
                 return request;
@@ -35,7 +54,7 @@ const withErrorHandler = (WrappedComponent, axios) => {
              * if there is any response other than 2XX codem it goes to the 
              * error wala method. and there we reject it to the catch block. 
              */
-            axios.interceptors.response.use( response => {
+            this.resInterceptor = axios.interceptors.response.use( response => {
                 console.log("inside the success response method");
                 return response;
             }, 
