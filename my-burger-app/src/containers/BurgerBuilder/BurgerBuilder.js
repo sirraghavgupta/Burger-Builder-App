@@ -63,59 +63,12 @@ class BurgerBuilder extends Component{
     purchaseContinueHandler = () => {
         console.log("ordering the item");
 
-        // this.setState( { loading:true } );
-
-        // const order = {
-        //     ingredients : this.state.ingredients,
-            /**
-             * note that in prod env, we never send the price like this. 
-             * we will evaluate it on the server again. 
-             * as the customer might be manipulating it, so we cant trust that.
-             * ---- very important. 
-             */
-        //     price : this.state.totalPrice,
-        //     customer : {
-        //         name : 'raghu',
-        //         address : {
-        //             street : 'testt streey 777',
-        //             pincode : '99987'
-        //         },
-        //         email : 'test@myburgerapp.com'
-        //     },
-        //     paymentMethod : 'cash',
-        //     deliveryMethod : 'fastest'
-        // }
-        /**
-         * its a syntax for firbase that we need to send the requst to 
-         * node_name.json. 
-         * .json has to be appended always. 
-         * it will be different for some other service provider. 
-         * 
-         * it will basically create a node orders and then store the data inside 
-         * that in nested form as json objects.
-         * it will maintain a list inside orders and assign a unique id to 
-         * all the entries, automatically. 
-         */
-
-
-        // axios.post("/orders.json", order)
-        //      .then( response => {
-        //                 console.log("inside the then block");
-        //                 console.log(response);
-        //                 this.setState( { loading:false, purchasing:false } );
-        //             })
-        //      .catch( error => {
-        //                 console.log("inside the catch block");
-        //                 console.log(error);
-        //                 this.setState( { loading:false, purchasing:false } );
-        //             });
-
         const queryParams = [];
         Object.keys(this.state.ingredients).forEach( key => {
             queryParams.push( encodeURIComponent(key) + 
                 '=' + encodeURIComponent(this.state.ingredients[key]));
         });
-        
+        queryParams.push('price=' + this.state.totalPrice);
         const queryString = '?' + queryParams.join('&');
         
         this.props.history.push({

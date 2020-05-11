@@ -12,12 +12,17 @@ class Checkout extends Component{
     componentDidMount = () => {
         const ingredients = {};
         const queryParams = new URLSearchParams(this.props.location.search);
+        let price = 0;
         for(let param of queryParams.entries()){
-            ingredients[param[0]] = +param[1];
+            if(param[0] !== 'price')
+                ingredients[param[0]] = +param[1];
+            else
+                price = param[1];
+
         }
         // console.log("componentDidMount() of checkout component.");
         // console.log(ingredients);
-        this.setState({ ingredients : ingredients });
+        this.setState({ ingredients : ingredients, totalPrice : price });
     }
 
     componentDidUpdate(){
@@ -41,8 +46,15 @@ class Checkout extends Component{
                     checkoutCancelled = { this.checkoutCancelHandler }
                     checkoutContinued = { this.checkoutContinueHandler }/>
                 <Route path = {this.props.match.path + '/contact-data'} 
-                   component = {ContactData} />
+                   render = { () => { 
+                       return <ContactData 
+                        ingredients = { this.state.ingredients }
+                        { ...this.props } 
+                        price = {this.state.totalPrice} /> } } /> 
             </div>
+
+// route doesnt pass props to the component if we use render method. 
+// so we need to pass them explicitly. 
         );
     }
 }
