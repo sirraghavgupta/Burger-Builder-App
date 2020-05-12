@@ -6,27 +6,55 @@ import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
 
 
-const getFormElementObject = ( tagType, inputType, placeHolder, val) => {
-    return {
-        elementType : tagType,
-        elementConfig : {
-            type : inputType,
-            placeholder : placeHolder
-        },
-        value : val
-    }
-}
-
 class ContactData extends Component{
 
     state = {
         orderForm : {
-            name : getFormElementObject('input', 'text', 'Your Name', ''),
-            street : getFormElementObject('input', 'text', 'Your Street', ''),
-            pincode : getFormElementObject('input', 'text', 'Your ZipCode', ''),
-            country : getFormElementObject('input', 'text', 'Your Country', ''),
-            email : getFormElementObject('input', 'email', 'Your Email', ''),
-        
+            name : {
+                        elementType : 'input',
+                        elementConfig : {
+                            type : 'text',
+                            placeholder : 'Your Name'
+                        },
+                        value : ''
+                    },
+                    
+            street : {
+                        elementType : 'input',
+                        elementConfig : {
+                            type : 'text',
+                            placeholder : 'Your Street'
+                        },
+                        value : ''
+                    },
+
+            pincode : {
+                        elementType : 'input',
+                        elementConfig : {
+                            type : 'text',
+                            placeholder : 'Your ZipCode'
+                        },
+                        value : ''
+                    },
+                
+            country : {
+                        elementType : 'input',
+                        elementConfig : {
+                            type : 'text',
+                            placeholder : 'Your Country'
+                        },
+                        value : ''
+                    },
+
+            email : {
+                        elementType : 'input',
+                        elementConfig : {
+                            type : 'email',
+                            placeholder : 'Your Email'
+                        },
+                        value : ''
+                    },    
+
             deliveryMethod : {
                                 elementType : 'select',
                                 elementConfig : {
