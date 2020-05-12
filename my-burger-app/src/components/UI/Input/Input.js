@@ -5,18 +5,48 @@ const input = (props) => {
 
     let inputElement = null;
 
-    switch ( props.inputtype ){
+    switch ( props.elementType ){
 
         case 'input' : 
-                inputElement = <input className = { classes.InputElement } {...props} />;
+                inputElement = <input 
+                                    className = { classes.InputElement } 
+                                    { ...props.elementConfig }
+                                    value = { props.value } 
+                                    onChange = { props.changed }
+                                />;
                 break;
         
         case 'textarea' : 
-                inputElement = <textarea className = { classes.InputElement } {...props} />;
+                inputElement = <textarea 
+                                    className = { classes.InputElement } 
+                                    { ...props.elementConfig } 
+                                    value = { props.value } 
+                                    onChange = { props.changed }
+                                />;
+                break;
+
+        case 'select' : 
+
+                let options = props.elementConfig.options.map( option => {
+                    return ( 
+                        <option value = { option.value }
+                                key = { option.value } >
+                                { option.displayValue }
+                        </option>);
+                });
+
+                inputElement = (<select className = { classes.InputElement }
+                                        onChange = { props.changed }>
+                                    {options}
+                               </select>);
                 break;
         
         default : 
-                inputElement = <input className = { classes.InputElement } {...props} />
+                inputElement = <input 
+                                    className = { classes.InputElement } 
+                                    {...props.elementConfig} 
+                                    value = { props.value }
+                                    onChange = { props.changed } />
     }
 
     return (
