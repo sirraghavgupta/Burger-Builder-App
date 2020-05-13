@@ -73,6 +73,7 @@ class BurgerBuilder extends Component{
                     <Burger ingredients = { this.props.ingredients} />
         
                     <BuildControls 
+                        ingredientNames = { Object.keys(this.props.ingredients) }
                         ingredientAdded = { this.props.onIngredientAdded }
                         ingredientRemoved = { this.props.onIngredientRemoved }
                         disabled = { disabledInfo }
