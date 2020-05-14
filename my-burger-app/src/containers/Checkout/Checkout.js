@@ -4,8 +4,8 @@ import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSumm
 import { Route, Redirect } from 'react-router-dom';
 import ContactData from './ContactData/ContactData';
 
-class Checkout extends Component{
 
+class Checkout extends Component{
 
     componentDidUpdate(){
         console.log("componentDidUpdate() of checkout component.");
@@ -24,8 +24,12 @@ class Checkout extends Component{
         let summary = <Redirect to="/" />;
 
         if( this.props.ingredients ){
+            const purchaseRedirect = this.props.purchased ? <Redirect to="/" /> : null;
+
             summary = (
                 <div>
+                    {purchaseRedirect}
+
                     <CheckoutSummary 
                         ingredients = {this.props.ingredients}
                         checkoutCancelled = { this.checkoutCancelHandler }
@@ -42,7 +46,8 @@ class Checkout extends Component{
 
 const mapStateToProps = state => {
     return {
-        ingredients : state.burgerBuilder.ingredients
+        ingredients : state.burgerBuilder.ingredients,
+        purchased : state.order.purchased
     };
 }
 

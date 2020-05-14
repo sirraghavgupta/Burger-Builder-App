@@ -39,3 +39,9 @@ export const purchaseBurgerFailed = ( ) => {
     }
 }
 
+
+export const purchaseInit = () => {
+    return {
+        type : actionTypes.PURCHASE_INIT
+    }
+}

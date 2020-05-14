@@ -16,7 +16,7 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 class BurgerBuilder extends Component{
 
     state = {
-        purchasing : false,
+        purchasing : false
     }
 
     componentDidMount = () => {
@@ -47,6 +47,7 @@ class BurgerBuilder extends Component{
 
     purchaseContinueHandler = () => {
         console.log("ordering the item");
+        this.props.onInitPurchase();    
         this.props.history.push('/checkout');
     }
 
@@ -86,7 +87,7 @@ class BurgerBuilder extends Component{
 
 
         return (
-            <Aux>
+            <Aux>rr
                 {/* // one method is this. 
                 {this.state.purchasing ? 
                     <Modal>
@@ -122,7 +123,8 @@ const mapDispatchToProps = dispatch => {
     return {
         onIngredientAdded : (name) => dispatch( burgerBuilderActions.addIngredient(name) ),
         onIngredientRemoved : (name) => dispatch( burgerBuilderActions.removeIngredient(name) ),
-        onInitIngredients : () => dispatch( burgerBuilderActions.initIngredients() )
+        onInitIngredients : () => dispatch( burgerBuilderActions.initIngredients() ),
+        onInitPurchase : () => dispatch( burgerBuilderActions.purchaseInit() )
     };
 }
 

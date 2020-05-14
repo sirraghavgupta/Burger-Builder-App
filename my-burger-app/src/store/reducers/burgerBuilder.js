@@ -49,7 +49,8 @@ const reducer = (state = initialState, action) => {
                  * flexibility with our ingredients in css. 
                  */
                 ingredients : {...action.ingredients},
-                error : false
+                error : false,
+                totalPrice : 4
             };
         
         case actionTypes.FETCH_INGREDIENTS_FAILED : 
