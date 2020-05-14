@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import ContactData from './ContactData/ContactData';
 
 class Checkout extends Component{
@@ -21,25 +21,28 @@ class Checkout extends Component{
 
     render(){
 
-        return (
-            <div>
-                <CheckoutSummary 
-                    ingredients = {this.props.ingredients}
-                    checkoutCancelled = { this.checkoutCancelHandler }
-                    checkoutContinued = { this.checkoutContinueHandler }/>
-                <Route path = { this.props.match.path + '/contact-data' }
-                       component = { ContactData } /> 
-            </div>
+        let summary = <Redirect to="/" />;
 
-// route doesnt pass props to the component if we use render method. 
-// so we need to pass them explicitly. 
-        );
+        if( this.props.ingredients ){
+            summary = (
+                <div>
+                    <CheckoutSummary 
+                        ingredients = {this.props.ingredients}
+                        checkoutCancelled = { this.checkoutCancelHandler }
+                        checkoutContinued = { this.checkoutContinueHandler }/>
+                    <Route path = { this.props.match.path + '/contact-data' }
+                        component = { ContactData } /> 
+                </div>
+            );
+        }
+
+        return summary;
     }
 }
 
 const mapStateToProps = state => {
     return {
-        ingredients : state.ingredients
+        ingredients : state.burgerBuilder.ingredients
     };
 }
 
