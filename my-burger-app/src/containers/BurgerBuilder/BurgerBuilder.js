@@ -87,7 +87,7 @@ class BurgerBuilder extends Component{
 
 
         return (
-            <Aux>rr
+            <Aux>
                 {/* // one method is this. 
                 {this.state.purchasing ? 
                     <Modal>
