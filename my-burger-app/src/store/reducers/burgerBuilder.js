@@ -1,4 +1,6 @@
 import * as actionTypes from '../actions/actionTypes';
+import { updateObject } from '../utility';
+
 
 const initialState = {
     ingredients : null,
@@ -20,44 +22,20 @@ const reducer = (state = initialState, action) => {
     switch(action.type){
 
         case actionTypes.ADD_INGREDIENT : 
-            return {
-                ...state,
-                ingredients : {
-                    ...state.ingredients,
-                    [action.ingredientName] : state.ingredients[action.ingredientName] + 1
-                },
-                totalPrice : state.totalPrice + INGREDIENT_PRICE[action.ingredientName]
-            };
+            const updatedIngredient = { [action.ingredientName] : state.ingredients[action.ingredientName] + 1 };
+            const updatedIngredients = updateObject( state.ingredients, updatedIngredient);
+            return updateObject( state, { ingredients : updatedIngredients, totalPrice : state.totalPrice + INGREDIENT_PRICE[action.ingredientName] } );
         
         case actionTypes.REMOVE_INGREDIENT : 
-            return {
-                ...state,
-                ingredients : {
-                    ...state.ingredients,
-                    [action.ingredientName] : state.ingredients[action.ingredientName] - 1
-                },
-                totalPrice : state.totalPrice - INGREDIENT_PRICE[action.ingredientName]
-            };
-
+            const updatedIng = { [action.ingredientName] : state.ingredients[action.ingredientName] - 1 };
+            const updatedIngs = updateObject( state.ingredients, updatedIng);
+            return updateObject( state, { ingredients : updatedIngs, totalPrice : state.totalPrice - INGREDIENT_PRICE[action.ingredientName] } );
+    
         case actionTypes.SET_INGREDIENTS : 
-            return {
-                ...state,
-                /**
-                 * here we can set the order of ingredients if we want. 
-                 * but then there will be no flexibility that we get our
-                 * ingredients from the server. but, we also dont have the 
-                 * flexibility with our ingredients in css. 
-                 */
-                ingredients : {...action.ingredients},
-                error : false,
-                totalPrice : 4
-            };
+            return updateObject( state, { ingredients : {...action.ingredients}, error : false, totalPrice : 4 });
         
-        case actionTypes.FETCH_INGREDIENTS_FAILED : 
-            return {
-                ...state,
-                error : true
-            };
+        case actionTypes.FETCH_INGREDIENTS_FAILED :
+            return updateObject( state, { error : true } ); 
         
         default : 
             return state;
