@@ -42,6 +42,12 @@ const reducer = (state = initialState, action) => {
         case actionTypes.SET_INGREDIENTS : 
             return {
                 ...state,
+                /**
+                 * here we can set the order of ingredients if we want. 
+                 * but then there will be no flexibility that we get our
+                 * ingredients from the server. but, we also dont have the 
+                 * flexibility with our ingredients in css. 
+                 */
                 ingredients : {...action.ingredients},
                 error : false
             };
