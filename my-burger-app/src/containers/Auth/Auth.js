@@ -5,6 +5,7 @@ import classes from './Auth.module.css';
 import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
 import * as authActions from '../../store/actions/index';
+import Aux from '../../hoc/Aux/Aux';
 
 
 
@@ -40,7 +41,8 @@ class Auth extends Component{
                 valid : false ,
                 touched : false  
             }
-        }
+        },
+        isSignup : true
     }
 
     checkValidity  = ( value, rules ) => {
@@ -79,7 +81,11 @@ class Auth extends Component{
 
     submitHandler = ( event ) => {
         event.preventDefault();
-        this.props.onAuth( this.state.controls.email.value, this.state.controls.password.value );
+        this.props.onAuth( this.state.controls.email.value, this.state.controls.password.value, this.state.isSignup );
+    }
+
+    switchModeHandler = () => {
+        this.setState( (prevState) => { return {isSignup : !prevState.isSignup} } );        
     }
 
     render() {
@@ -102,13 +108,18 @@ class Auth extends Component{
         });
 
         const form  = (
-            <form onSubmit = { this.submitHandler }>
-                <h4>Login</h4>
+            <Aux>
+                <form onSubmit = { this.submitHandler }>
+                    <h4>Login</h4>
 
-                {formElements}
-                {/* disabled = { !this.state.formIsValid } */}
-                <Button btnType = "Success"> Submit </Button>
-            </form>
+                    {formElements}
+                    {/* disabled = { !this.state.formIsValid } */}
+        <Button btnType = "Success"> { this.state.isSignup ? 'Signup' : 'Signin' } </Button>
+                </form>
+                <Button 
+                    clicked = { this.switchModeHandler }
+                    btnType = "Danger" > SWITCH AUTH MODE </Button>
+            </Aux>
         );
 
         return (
@@ -121,7 +132,7 @@ class Auth extends Component{
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAuth : ( email, password ) => dispatch( authActions.auth( email, password ) )
+        onAuth : ( email, password, isSignup ) => dispatch( authActions.auth( email, password, isSignup ) )
     };
 }
 
