@@ -2,12 +2,12 @@ import * as actionTypes from './actionTypes';
 import axios from '../../Axios/instance1';
 
 
-export const puchaseBurger = ( newOrder ) => {
+export const puchaseBurger = ( newOrder, token ) => {
     return dispatch => {
     
         dispatch( purchaseBurgerStart() );
 
-        axios.post("/orders.json", newOrder)
+        axios.post("/orders.json?auth="+token, newOrder)
 
              .then( response => {
                         dispatch( purchaseBurgerSuccess(response.data.name, newOrder) );
@@ -66,10 +66,10 @@ export const fetchOrdersFailed = () => {
     };
 }
 
-export const fetchOrders = () => {
+export const fetchOrders = ( token ) => {
     return dispatch => {
         dispatch( fetchOrdersStart() );
-        axios.get("/orders.json")
+        axios.get("/orders.json?auth="+token)
              .then( response => {
                 const fetchedOrders  = [];
                 for(let key in response.data){
