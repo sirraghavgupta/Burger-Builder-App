@@ -6,6 +6,7 @@ import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
 import * as authActions from '../../store/actions/index';
 import Aux from '../../hoc/Aux/Aux';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 
 
@@ -107,15 +108,24 @@ class Auth extends Component{
             );
         });
 
+        let spinner = <Spinner/>;
+
+        let errorMessage = null;
+        if( this.props.error ){
+            errorMessage = <p>{ this.props.error.message }</p>;
+        }
+
         const form  = (
             <Aux>
+                { errorMessage }
                 <form onSubmit = { this.submitHandler }>
-                    <h4>Login</h4>
+                    <h4>{ this.state.isSignup ? 'SIGNUP' : 'SIGNIN' }</h4>
 
                     {formElements}
                     {/* disabled = { !this.state.formIsValid } */}
-        <Button btnType = "Success"> { this.state.isSignup ? 'Signup' : 'Signin' } </Button>
+                    <Button btnType = "Success"> { this.state.isSignup ? 'Signup' : 'Signin' } </Button>
                 </form>
+
                 <Button 
                     clicked = { this.switchModeHandler }
                     btnType = "Danger" > SWITCH AUTH MODE </Button>
@@ -124,9 +134,17 @@ class Auth extends Component{
 
         return (
             <div className = { classes.Auth }>
-                {form}
+                { this.props.loading ? spinner : form}
             </div>
         );
+    }
+}
+
+
+const mapStateToProps = state => {
+    return {
+        loading : state.auth.loading,
+        error : state.auth.error
     }
 }
 
@@ -136,4 +154,4 @@ const mapDispatchToProps = dispatch => {
     };
 }
 
-export default connect(null, mapDispatchToProps)(Auth);
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);

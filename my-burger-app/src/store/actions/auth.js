@@ -8,10 +8,11 @@ export const authStart = () => {
     };
 }
 
-export const authSuccess = ( authData ) => {
+export const authSuccess = ( token, userId ) => {
     return {
         type : actionTypes.AUTH_SUCCESS,
-        authData : authData
+        idToken : token, 
+        localId : userId
     };
 }
 
@@ -38,14 +39,14 @@ export const auth = ( email, password, isSignup ) => {
         if( !isSignup )
             url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCxwH27QH1glieZAtX9NBW8XNzr2kM6e28';
 
-        axios.post(url, authData)
+        axios.post( url, authData )
              .then( response => {
                 console.log( response );
-                dispatch( authSuccess( response.data ) );
+                dispatch( authSuccess( response.data.idToken, response.data.localId ) );
              })
              .catch( error => {
-                console.log(error);
-                dispatch(authFailed(error));
+                console.log( error );
+                dispatch( authFailed( error.response.data.error ) );
              })
     }
 }
