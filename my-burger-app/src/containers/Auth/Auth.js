@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
 import classes from './Auth.module.css'; 
 import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
+import * as authActions from '../../store/actions/index';
 
 
 
@@ -51,7 +54,7 @@ class Auth extends Component{
             isValid = value.length >= rules.minLength;
         }
         
-        const pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         
         if( rules.isEmail && isValid ){
             isValid = pattern.test(value)
@@ -74,6 +77,11 @@ class Auth extends Component{
         this.setState( { controls : newControls } );
     } 
 
+    submitHandler = ( event ) => {
+        event.preventDefault();
+        this.props.onAuth( this.state.controls.email.value, this.state.controls.password.value );
+    }
+
     render() {
         
         const elements = Object.keys( this.state.controls ).map(
@@ -94,12 +102,12 @@ class Auth extends Component{
         });
 
         const form  = (
-            <form onSubmit = { this.authHandler }>
+            <form onSubmit = { this.submitHandler }>
                 <h4>Login</h4>
 
                 {formElements}
                 {/* disabled = { !this.state.formIsValid } */}
-                <Button btnType = "Success"> Login </Button>
+                <Button btnType = "Success"> Submit </Button>
             </form>
         );
 
@@ -111,4 +119,10 @@ class Auth extends Component{
     }
 }
 
-export default Auth;
+const mapDispatchToProps = dispatch => {
+    return {
+        onAuth : ( email, password ) => dispatch( authActions.auth( email, password ) )
+    };
+}
+
+export default connect(null, mapDispatchToProps)(Auth);
