@@ -8,7 +8,7 @@ import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
 import * as orderActions from '../../../store/actions/index';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
-import { updateObject } from '../../../shared/utility';
+import { updateObject, checkValidity } from '../../../shared/utility';
 
 class ContactData extends Component {
   state = {
@@ -80,6 +80,7 @@ class ContactData extends Component {
         value: '',
         validation: {
           required: true,
+          isEmail: true,
         },
         valid: false,
         touched: false,
@@ -120,29 +121,11 @@ class ContactData extends Component {
     this.props.onOrderBurger(order, this.props.token);
   };
 
-  checkValidity = (value, rules) => {
-    let isValid = true;
-
-    if (rules.required && isValid) {
-      isValid = value.trim() !== '';
-    }
-
-    if (rules.minLength && isValid) {
-      isValid = value.length >= rules.minLength;
-    }
-
-    if (rules.maxLength && isValid) {
-      isValid = value.length <= rules.maxLength;
-    }
-
-    return isValid;
-  };
-
   inputChangeHandler = (event, fieldname) => {
     const newFieldValue = updateObject(this.state.orderForm[fieldname], {
       value: event.target.value,
       touched: true,
-      valid: this.checkValidity(event.target.value, this.state.orderForm[fieldname].validation),
+      valid: checkValidity(event.target.value, this.state.orderForm[fieldname].validation),
     });
 
     const newOrderForm = updateObject(this.state.orderForm, {

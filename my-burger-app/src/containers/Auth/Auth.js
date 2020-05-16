@@ -8,7 +8,7 @@ import Input from '../../components/UI/Input/Input';
 import * as authActions from '../../store/actions/index';
 import Aux from '../../hoc/Aux/Aux';
 import Spinner from '../../components/UI/Spinner/Spinner';
-import { updateObject } from '../../shared/utility';
+import { updateObject, checkValidity } from '../../shared/utility';
 
 class Auth extends Component {
   state = {
@@ -51,31 +51,11 @@ class Auth extends Component {
     }
   };
 
-  checkValidity = (value, rules) => {
-    let isValid = true;
-
-    if (rules.required && isValid) {
-      isValid = value.trim() !== '';
-    }
-
-    if (rules.minLength && isValid) {
-      isValid = value.length >= rules.minLength;
-    }
-
-    const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-    if (rules.isEmail && isValid) {
-      isValid = pattern.test(value);
-    }
-
-    return isValid;
-  };
-
   inputChangeHandler = (event, fieldname) => {
     const newFieldValue = updateObject(this.state.controls[fieldname], {
       value: event.target.value,
       touched: true,
-      valid: this.checkValidity(event.target.value, this.state.controls[fieldname].validation),
+      valid: checkValidity(event.target.value, this.state.controls[fieldname].validation),
     });
 
     const newControls = updateObject(this.state.controls, {
