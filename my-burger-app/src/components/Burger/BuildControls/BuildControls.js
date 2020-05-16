@@ -7,6 +7,7 @@ const BuildControls = (props) => (
     <p>
       Current Price : <strong>{props.price.toFixed(2)}</strong>
     </p>
+
     {props.ingredientNames.map((ingredientName) => (
       <BuildControl
         label={ingredientName}
@@ -17,6 +18,7 @@ const BuildControls = (props) => (
         disabled={props.disabled[ingredientName]}
       />
     ))}
+
     <button className={classes.OrderButton} disabled={!props.purchasable} onClick={props.ordered}>
       {props.isAuth ? 'Order Now' : 'Signup To Continue'}
     </button>

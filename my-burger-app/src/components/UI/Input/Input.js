@@ -2,71 +2,75 @@ import React from 'react';
 import classes from './Input.module.css';
 
 const input = (props) => {
+  let inputElement = null;
 
-    let inputElement = null;
+  let validationError = null;
 
-    let validationError = null;
+  let inputClasses = [classes.InputElement];
 
-    let inputClasses = [ classes.InputElement ];
+  if (!props.valid && props.validation && props.touched) {
+    inputClasses.push(classes.Invalid);
 
-    if( !props.valid && props.validation && props.touched){
-        inputClasses.push(classes.Invalid);
+    validationError = <p className={classes.ValidationError}>Please enter a valid value!</p>;
+  }
 
-        validationError = <p className = { classes.ValidationError }>
-                            Please enter a valid value!</p>;
-    }
+  switch (props.elementType) {
+    case 'input':
+      inputElement = (
+        <input
+          className={inputClasses.join(' ')}
+          {...props.elementConfig}
+          value={props.value}
+          onChange={props.changed}
+        />
+      );
+      break;
 
-    switch ( props.elementType ){
+    case 'textarea':
+      inputElement = (
+        <textarea
+          className={inputClasses.join(' ')}
+          {...props.elementConfig}
+          value={props.value}
+          onChange={props.changed}
+        />
+      );
+      break;
 
-        case 'input' : 
-                inputElement = <input 
-                                    className = { inputClasses.join(' ') } 
-                                    { ...props.elementConfig }
-                                    value = { props.value } 
-                                    onChange = { props.changed }
-                                />;
-                break;
-        
-        case 'textarea' : 
-                inputElement = <textarea 
-                                    className = { inputClasses.join(' ') } 
-                                    { ...props.elementConfig } 
-                                    value = { props.value } 
-                                    onChange = { props.changed }
-                                />;
-                break;
+    case 'select':
+      let options = props.elementConfig.options.map((option) => {
+        return (
+          <option value={option.value} key={option.value}>
+            {option.displayValue}
+          </option>
+        );
+      });
 
-        case 'select' : 
+      inputElement = (
+        <select className={inputClasses.join(' ')} onChange={props.changed}>
+          {options}
+        </select>
+      );
+      break;
 
-                let options = props.elementConfig.options.map( option => {
-                    return ( 
-                        <option value = { option.value }
-                                key = { option.value } >
-                                { option.displayValue }
-                        </option>);
-                });
+    default:
+      inputElement = (
+        <input
+          className={inputClasses.join(' ')}
+          {...props.elementConfig}
+          value={props.value}
+          onChange={props.changed}
+        />
+      );
+  }
 
-                inputElement = (<select className = { inputClasses.join(' ') }
-                                        onChange = { props.changed }>
-                                    {options}
-                               </select>);
-                break;
-        
-        default : 
-                inputElement = <input 
-                                    className = { inputClasses.join(' ') } 
-                                    {...props.elementConfig} 
-                                    value = { props.value }
-                                    onChange = { props.changed } />
-    }
-
-    return (
-        <div className = { classes.Input }>
-            <label className = { classes.Label }>{ props.label }</label>
-            { inputElement }
-            { validationError }
-        </div>
-    );
-}
+  return (
+    <div className={classes.Input}>
+      <label className={classes.Label}>{props.label}</label>
+      {inputElement}
+      {validationError}
+    </div>
+  );
+};
 
 export default input;
