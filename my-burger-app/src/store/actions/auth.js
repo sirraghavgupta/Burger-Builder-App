@@ -43,6 +43,17 @@ export const auth = (email, password, isSignup) => {
       .post(url, authData)
       .then((response) => {
         console.log(response);
+
+        // storing the token in the browser local storage.
+        /**
+         * here we are using the local storage api which is inbuilt into the
+         * browser. and its by default available in the javascript.
+         */
+        const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000);
+        localStorage.setItem('token', response.data.idToken);
+        localStorage.setItem('expirationDate', expirationDate);
+        localStorage.setItem('userId', response.data.localId);
+
         dispatch(authSuccess(response.data.idToken, response.data.localId));
         dispatch(checkAuthTimeout(response.data.expiresIn));
       })
@@ -54,6 +65,7 @@ export const auth = (email, password, isSignup) => {
 };
 
 const checkAuthTimeout = (expirationTime) => {
+  console.log(expirationTime);
   return (dispatch) => {
     setTimeout(() => {
       dispatch(authLogout());
@@ -62,6 +74,10 @@ const checkAuthTimeout = (expirationTime) => {
 };
 
 export const authLogout = () => {
+  localStorage.removeItem('token');
+  localStorage.removeItem('expirationDate');
+  localStorage.removeItem('userId');
+
   return {
     type: actionTypes.AUTH_LOGOUT,
   };
@@ -71,5 +87,24 @@ export const setAuthRedirectPath = (path) => {
   return {
     type: actionTypes.SET_AUTH_REDIRECT_PATH,
     path: path,
+  };
+};
+
+export const checkAuthState = () => {
+  return (dispatch) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.log(' logging out  ', token);
+      dispatch(authLogout());
+    } else {
+      const expirationDate = new Date(localStorage.getItem('expirationDate'));
+      if (expirationDate <= new Date()) {
+        console.log('logging out', expirationDate);
+        dispatch(authLogout());
+      } else {
+        dispatch(authSuccess(token, localStorage.getItem('userId')));
+        dispatch(checkAuthTimeout((expirationDate.getTime() - new Date().getTime()) / 1000));
+      }
+    }
   };
 };
