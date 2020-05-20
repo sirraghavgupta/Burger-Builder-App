@@ -1,17 +1,15 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import Aux from '../../hoc/Aux/Aux';
 import classes from './Layout.module.css';
 import Toolbar from '../../components/Toolbar/Toolbar';
 import SideDrawer from '../../components/Navigation/SideDrawer/SideDrawer';
 
-class Layout extends Component {
-  state = {
-    showSideDrawer: false,
-  };
+const Layout = (props) => {
+  const [showSideDrawer, setShowSideDrawer] = useState(false);
 
-  closeSideDrawerHandler = () => {
-    this.setState({ showSideDrawer: false });
+  const closeSideDrawerHandler = () => {
+    setShowSideDrawer(false);
   };
 
   /**
@@ -19,31 +17,24 @@ class Layout extends Component {
    * nature of setState() method. here, prevState will be automatically
    * passed in the arrow function. this is recommended.
    */
-  toggleSideDrawerHandler = () => {
-    this.setState((prevState) => {
-      return { showSideDrawer: !prevState.showSideDrawer };
-    });
+  const toggleSideDrawerHandler = () => {
+    setShowSideDrawer((prevShowState) => !prevShowState);
   };
 
-  render() {
-    return (
-      <Aux>
-        <Toolbar
-          isAuthenticated={this.props.isAuthenticated}
-          toggleDrawer={this.toggleSideDrawerHandler}
-        />
+  return (
+    <Aux>
+      <Toolbar isAuthenticated={props.isAuthenticated} toggleDrawer={toggleSideDrawerHandler} />
 
-        <SideDrawer
-          isAuthenticated={this.props.isAuthenticated}
-          closeDrawer={this.closeSideDrawerHandler}
-          showDrawer={this.state.showSideDrawer}
-        />
+      <SideDrawer
+        isAuthenticated={props.isAuthenticated}
+        closeDrawer={closeSideDrawerHandler}
+        showDrawer={showSideDrawer}
+      />
 
-        <main className={classes.Content}>{this.props.children}</main>
-      </Aux>
-    );
-  }
-}
+      <main className={classes.Content}>{props.children}</main>
+    </Aux>
+  );
+};
 
 const mapStateToProps = (state) => {
   return {
