@@ -1,46 +1,38 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Aux from '../../../hoc/Aux/Aux';
 import Button from '../../UI/Button/Button';
 
-
-class OrderSummary extends Component{
-
-    // componentWillUpdate = () => {
-    //     console.log("order summary will update");
-    // }
-
-    render(){
-        const ingredientSummary = 
-        Object.entries(this.props.ingredients)
-                 .map( ([label, qty]) => {
-                    return <li key = { label }> 
-                                <span style = {{textTransform : 'capitalize'}}>
-                                        {label}
-                                </span> : {qty} 
-                            </li>;
-                 } );
-
+const OrderSummary = (props) => {
+  const ingredientSummary = Object.entries(props.ingredients).map(([label, qty]) => {
     return (
-        <Aux>
-            <h3>Your order</h3>
-            <p>A delicious burger with the following ingredients:</p>
+      <li key={label}>
+        <span style={{ textTransform: 'capitalize' }}>{label}</span> : {qty}
+      </li>
+    );
+  });
 
-            <ul>
-                { ingredientSummary }
-            </ul>
+  return (
+    <Aux>
+      <h3>Your order</h3>
+      <p>A delicious burger with the following ingredients:</p>
 
-            <p><strong>Total price : {this.props.price.toFixed(2)}</strong></p>
+      <ul>{ingredientSummary}</ul>
 
-            <p>Continue to Checkout?</p>
+      <p>
+        <strong>Total price : {props.price.toFixed(2)}</strong>
+      </p>
 
-            <Button clicked = { this.props.cancelled }
-                    btnType = 'Success'>CANCEL</Button>
+      <p>Continue to Checkout?</p>
 
-            <Button clicked = { this.props.continued }
-                    btnType = 'Danger'>CONTINUE</Button>
-        </Aux>
-        );
-    }
-}
+      <Button clicked={props.cancelled} btnType="Success">
+        CANCEL
+      </Button>
+
+      <Button clicked={props.continued} btnType="Danger">
+        CONTINUE
+      </Button>
+    </Aux>
+  );
+};
 
 export default OrderSummary;
