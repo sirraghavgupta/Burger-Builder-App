@@ -1,5 +1,7 @@
 import React from 'react';
-import classes from '../Logo/Logo.module.css';
+
+import classes from './Logo.module.css';
+
 import burgerLogo from '../../assets/images/logo.png';
 
 /**

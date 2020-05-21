@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
 import Button from '../../../components/UI/Button/Button';
-import classes from './ContactData.module.css';
-import axios from '../../../Axios/instance1';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
 import * as orderActions from '../../../store/actions/index';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 import { updateObject, checkValidity } from '../../../shared/utility';
+import axios from '../../../Axios/instance1';
+
+import classes from './ContactData.module.css';
 
 const ContactData = (props) => {
   const [orderForm, setOrderForm] = useState({
@@ -131,21 +132,21 @@ const ContactData = (props) => {
     });
 
     let formIsValid = true;
-    for (let field in orderForm) {
+    for (const field in orderForm) {
       formIsValid = formIsValid && newOrderForm[field].valid;
     }
     setOrderForm(newOrderForm);
     setFormIsValid(formIsValid);
   };
 
-  let elements = Object.keys(orderForm).map((key) => {
+  const elements = Object.keys(orderForm).map((key) => {
     return {
       id: key,
       config: orderForm[key],
     };
   });
 
-  let formElements = elements.map((element) => {
+  const formElements = elements.map((element) => {
     return (
       <Input
         key={element.id}
@@ -184,8 +185,12 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onOrderBurger: (newOrder, token) => dispatch(orderActions.puchaseBurger(newOrder, token)),
+    onOrderBurger: (newOrder, token) =>
+      dispatch(orderActions.puchaseBurger(newOrder, token)),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(ContactData, axios));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withErrorHandler(ContactData, axios));

@@ -1,15 +1,18 @@
 import React from 'react';
+
 import Aux from '../../../hoc/Aux/Aux';
 import Button from '../../UI/Button/Button';
 
 const OrderSummary = (props) => {
-  const ingredientSummary = Object.entries(props.ingredients).map(([label, qty]) => {
-    return (
-      <li key={label}>
-        <span style={{ textTransform: 'capitalize' }}>{label}</span> : {qty}
-      </li>
-    );
-  });
+  const ingredientSummary = Object.entries(props.ingredients).map(
+    ([label, qty]) => {
+      return (
+        <li key={label}>
+          <span style={{ textTransform: 'capitalize' }}>{label}</span> : {qty}
+        </li>
+      );
+    }
+  );
 
   return (
     <Aux>

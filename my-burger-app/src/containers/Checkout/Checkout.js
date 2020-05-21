@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 import { Route, Redirect } from 'react-router-dom';
+
+import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 import ContactData from './ContactData/ContactData';
 
 const Checkout = (props) => {
@@ -27,7 +28,10 @@ const Checkout = (props) => {
           checkoutCancelled={checkoutCancelHandler}
           checkoutContinued={checkoutContinueHandler}
         />
-        <Route path={props.match.path + '/contact-data'} component={ContactData} />
+        <Route
+          path={`${props.match.path}/contact-data`}
+          component={ContactData}
+        />
       </div>
     );
   }

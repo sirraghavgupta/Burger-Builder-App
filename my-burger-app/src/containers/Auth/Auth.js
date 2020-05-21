@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import classes from './Auth.module.css';
 import Button from '../../components/UI/Button/Button';
 import Input from '../../components/UI/Input/Input';
-import * as authActions from '../../store/actions/index';
-import Aux from '../../hoc/Aux/Aux';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import * as authActions from '../../store/actions/index';
 import { updateObject, checkValidity } from '../../shared/utility';
+import Aux from '../../hoc/Aux/Aux';
+
+import classes from './Auth.module.css';
 
 const Auth = (props) => {
   const [controls, setControls] = useState({
@@ -93,7 +94,7 @@ const Auth = (props) => {
     );
   });
 
-  let spinner = <Spinner />;
+  const spinner = <Spinner />;
 
   let authRedirect = null;
   if (props.isAuthenticated) {
@@ -144,7 +145,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onAuth: (email, password, isSignup) => dispatch(authActions.auth(email, password, isSignup)),
+    onAuth: (email, password, isSignup) =>
+      dispatch(authActions.auth(email, password, isSignup)),
     onSetAuthRedirectPath: () => dispatch(authActions.setAuthRedirectPath('/')),
   };
 };

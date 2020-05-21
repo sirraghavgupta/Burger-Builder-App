@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+
 import Aux from '../../hoc/Aux/Aux';
-import classes from './Layout.module.css';
 import Toolbar from '../../components/Toolbar/Toolbar';
 import SideDrawer from '../../components/Navigation/SideDrawer/SideDrawer';
+
+import classes from './Layout.module.css';
 
 const Layout = (props) => {
   const [showSideDrawer, setShowSideDrawer] = useState(false);
@@ -23,7 +25,10 @@ const Layout = (props) => {
 
   return (
     <Aux>
-      <Toolbar isAuthenticated={props.isAuthenticated} toggleDrawer={toggleSideDrawerHandler} />
+      <Toolbar
+        isAuthenticated={props.isAuthenticated}
+        toggleDrawer={toggleSideDrawerHandler}
+      />
 
       <SideDrawer
         isAuthenticated={props.isAuthenticated}

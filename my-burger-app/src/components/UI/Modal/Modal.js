@@ -1,7 +1,9 @@
 import React from 'react';
-import classes from './Modal.module.css';
+
 import Aux from '../../../hoc/Aux/Aux';
 import Backdrop from '../Backdrop/Backdrop';
+
+import classes from './Modal.module.css';
 
 const Modal = (props) => {
   return (
@@ -24,6 +26,7 @@ const Modal = (props) => {
 export default React.memo(
   Modal,
   (prevProps, nextProps) =>
-    nextProps.show === prevProps.show && nextProps.children === prevProps.children
+    nextProps.show === prevProps.show &&
+    nextProps.children === prevProps.children
 );
 // return true if the prevProps and nextProps are equal and false otherwise.

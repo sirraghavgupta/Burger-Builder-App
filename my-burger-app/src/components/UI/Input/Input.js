@@ -1,4 +1,5 @@
 import React from 'react';
+
 import classes from './Input.module.css';
 
 const input = (props) => {
@@ -6,12 +7,14 @@ const input = (props) => {
 
   let validationError = null;
 
-  let inputClasses = [classes.InputElement];
+  const inputClasses = [classes.InputElement];
 
   if (!props.valid && props.validation && props.touched) {
     inputClasses.push(classes.Invalid);
 
-    validationError = <p className={classes.ValidationError}>Please enter a valid value!</p>;
+    validationError = (
+      <p className={classes.ValidationError}>Please enter a valid value!</p>
+    );
   }
 
   switch (props.elementType) {
@@ -38,7 +41,7 @@ const input = (props) => {
       break;
 
     case 'select':
-      let options = props.elementConfig.options.map((option) => {
+      const options = props.elementConfig.options.map((option) => {
         return (
           <option value={option.value} key={option.value}>
             {option.displayValue}

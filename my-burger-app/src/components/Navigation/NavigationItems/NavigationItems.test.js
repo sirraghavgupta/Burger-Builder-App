@@ -28,6 +28,8 @@ describe('<NavigationItems/>', () => {
   it('should render 3 <NavigatiionItem/> elements if authenticated', () => {
     // wrapper = shallow(<NavigationItems isAuth />);
     wrapper.setProps({ isAuth: true });
-    expect(wrapper.contains(<NavigationItem link="/logout">Logout</NavigationItem>)).toEqual(true);
+    expect(
+      wrapper.contains(<NavigationItem link="/logout">Logout</NavigationItem>)
+    ).toEqual(true);
   });
 });

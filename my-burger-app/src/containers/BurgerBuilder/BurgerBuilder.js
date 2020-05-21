@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import * as burgerBuilderActions from '../../store/actions/index';
-import Aux from '../../hoc/Aux/Aux';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Spinner from '../../components/UI/Spinner/Spinner';
-import axios from '../../Axios/instance1';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import Aux from '../../hoc/Aux/Aux';
+
+import axios from '../../Axios/instance1';
+import * as burgerBuilderActions from '../../store/actions/index';
 
 const BurgerBuilder = (props) => {
   const [purchasing, setPurchasing] = useState(false);
@@ -22,7 +23,7 @@ const BurgerBuilder = (props) => {
 
   const getPurchaseState = (ingredients) => {
     const count = Object.values(ingredients).reduce((a, b) => a + b, 0);
-    let purchaseState = count > 0 ? true : false;
+    const purchaseState = count > 0;
     return purchaseState;
   };
 
@@ -102,14 +103,20 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onIngredientAdded: (name) => dispatch(burgerBuilderActions.addIngredient(name)),
-    onIngredientRemoved: (name) => dispatch(burgerBuilderActions.removeIngredient(name)),
+    onIngredientAdded: (name) =>
+      dispatch(burgerBuilderActions.addIngredient(name)),
+    onIngredientRemoved: (name) =>
+      dispatch(burgerBuilderActions.removeIngredient(name)),
     onInitIngredients: () => dispatch(burgerBuilderActions.initIngredients()),
     onInitPurchase: () => dispatch(burgerBuilderActions.purchaseInit()),
-    onSetAuthRedirectPath: (path) => dispatch(burgerBuilderActions.setAuthRedirectPath(path)),
+    onSetAuthRedirectPath: (path) =>
+      dispatch(burgerBuilderActions.setAuthRedirectPath(path)),
   };
 };
 
 export { BurgerBuilder };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(BurgerBuilder, axios));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withErrorHandler(BurgerBuilder, axios));
