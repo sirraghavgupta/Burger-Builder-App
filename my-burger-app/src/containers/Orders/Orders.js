@@ -7,9 +7,11 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import * as orderActions from '../../store/actions/index';
 
 const Orders = (props) => {
+  const { onInitOrders, token, userId } = props;
+
   useEffect(() => {
-    props.onInitOrders(props.token, props.userId);
-  }, []);
+    onInitOrders(token, userId);
+  }, [onInitOrders, token, userId]);
 
   let orders = <Spinner />;
 

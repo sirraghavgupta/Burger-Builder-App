@@ -36,7 +36,7 @@ export default (axios) => {
       axios.interceptors.request.eject(reqInterceptor);
       axios.interceptors.response.eject(resInterceptor);
     };
-  }, [reqInterceptor, resInterceptor]);
+  }, [reqInterceptor, resInterceptor, axios.interceptors.response, axios.interceptors.request]);
 
   const errorConfirmedHandler = () => {
     setError(null);

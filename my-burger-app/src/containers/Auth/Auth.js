@@ -44,12 +44,14 @@ const Auth = (props) => {
 
   const [isSignup, setIsSignup] = useState(true);
 
+  const { onSetAuthRedirectPath, buildingBurger, authRedirectPath } = props;
+
   // component did mount
   useEffect(() => {
-    if (!props.buildingBurger && props.authRedirectPath !== '/') {
-      props.onSetAuthRedirectPath();
+    if (!buildingBurger && authRedirectPath !== '/') {
+      onSetAuthRedirectPath();
     }
-  }, []);
+  }, [onSetAuthRedirectPath, authRedirectPath, buildingBurger]);
 
   const inputChangeHandler = (event, fieldname) => {
     const newFieldValue = updateObject(controls[fieldname], {
