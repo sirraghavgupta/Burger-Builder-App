@@ -20,7 +20,7 @@ const order = (props) => {
 
   const ingredientsOutput = ingredientsArray.map((ingredient) => {
     return (
-      <span style={style}>
+      <span style={style} key={ingredient.name}>
         {ingredient.name} ({ingredient.qty})
       </span>
     );
