@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import * as burgerBuilderActions from '../../store/actions/index';
@@ -11,95 +11,83 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import axios from '../../Axios/instance1';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
-export class BurgerBuilder extends Component {
-  state = {
-    purchasing: false,
-  };
+const BurgerBuilder = (props) => {
+  const [purchasing, setPurchasing] = useState(false);
 
-  componentDidMount = () => {
-    console.log('getting ingredients from server - componentDidMount()');
-    this.props.onInitIngredients();
-  };
+  useEffect(() => {
+    props.onInitIngredients();
+  }, []);
 
-  getPurchaseState = (ingredients) => {
+  const getPurchaseState = (ingredients) => {
     const count = Object.values(ingredients).reduce((a, b) => a + b, 0);
     let purchaseState = count > 0 ? true : false;
     return purchaseState;
   };
 
-  /**
-   * basically, we want to arrow function here because we need to refer to
-   * this. now, we refer to this in render() also but we use normal syntax
-   * there. the issue comes when the method is triggered by an event. then
-   * there is a problem in using the this. so, its preferred to use arrow
-   * function always so that we dont miss anything.
-   */
-  purchaseHandler = () => {
-    if (this.props.isAuthenticated) {
-      this.setState({ purchasing: true });
+  const purchaseHandler = () => {
+    if (props.isAuthenticated) {
+      setPurchasing(true);
     } else {
-      this.props.onSetAuthRedirectPath('/checkout');
-      this.props.history.push('/auth');
+      props.onSetAuthRedirectPath('/checkout');
+      props.history.push('/auth');
     }
   };
 
-  purchaseCancelHandler = () => {
-    this.setState({ purchasing: false });
+  const purchaseCancelHandler = () => {
+    setPurchasing(false);
   };
 
-  purchaseContinueHandler = () => {
+  const purchaseContinueHandler = () => {
     console.log('ordering the item');
-    this.props.onInitPurchase();
-    this.props.history.push('/checkout');
+    props.onInitPurchase();
+    props.history.push('/checkout');
   };
 
-  render() {
-    const disabledInfo = { ...this.props.ingredients };
-    Object.keys(disabledInfo).forEach((type) => {
-      disabledInfo[type] = disabledInfo[type] <= 0;
-    });
+  const disabledInfo = { ...props.ingredients };
+  Object.keys(disabledInfo).forEach((type) => {
+    disabledInfo[type] = disabledInfo[type] <= 0;
+  });
 
-    let burger = this.props.error ? <p>Something went wrong!!</p> : <Spinner />;
-    let orderSummary = null;
-    if (this.props.ingredients) {
-      burger = (
-        <Aux>
-          <Burger ingredients={this.props.ingredients} />
-
-          <BuildControls
-            ingredientNames={Object.keys(this.props.ingredients)}
-            ingredientAdded={this.props.onIngredientAdded}
-            ingredientRemoved={this.props.onIngredientRemoved}
-            disabled={disabledInfo}
-            price={this.props.totalPrice}
-            purchasable={this.getPurchaseState(this.props.ingredients)}
-            ordered={this.purchaseHandler}
-            isAuth={this.props.isAuthenticated}
-          />
-        </Aux>
-      );
-
-      orderSummary = (
-        <OrderSummary
-          ingredients={this.props.ingredients}
-          cancelled={this.purchaseCancelHandler}
-          continued={this.purchaseContinueHandler}
-          price={this.props.totalPrice}
-        />
-      );
-    }
-
-    return (
+  let burger = props.error ? <p>Something went wrong!!</p> : <Spinner />;
+  let orderSummary = null;
+  if (props.ingredients) {
+    burger = (
       <Aux>
-        <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
-          {orderSummary}
-        </Modal>
+        <Burger ingredients={props.ingredients} />
 
-        {burger}
+        <BuildControls
+          ingredientNames={Object.keys(props.ingredients)}
+          ingredientAdded={props.onIngredientAdded}
+          ingredientRemoved={props.onIngredientRemoved}
+          disabled={disabledInfo}
+          price={props.totalPrice}
+          purchasable={getPurchaseState(props.ingredients)}
+          ordered={purchaseHandler}
+          isAuth={props.isAuthenticated}
+        />
       </Aux>
     );
+
+    orderSummary = (
+      <OrderSummary
+        ingredients={props.ingredients}
+        cancelled={purchaseCancelHandler}
+        continued={purchaseContinueHandler}
+        price={props.totalPrice}
+      />
+    );
   }
-}
+
+  return (
+    <Aux>
+      <Modal show={purchasing} modalClosed={purchaseCancelHandler}>
+        {orderSummary}
+      </Modal>
+
+      {burger}
+    </Aux>
+  );
+};
 
 const mapStateToProps = (state) => {
   return {
@@ -120,12 +108,6 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-/**
- * here we might doubt that we may have problem because there is already
- * an hoc present to wrap the BurgerBuilder.
- * answer is - we may have any number of HOCs, it doesnt matter.
- * plus, the connect will add some props to the withErrorHandler and those
- * props might be lost, but here we are passing the props to the
- * burger builder inside the withErrorHandler. so, its good that we do that.
- */
+export { BurgerBuilder };
+
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(BurgerBuilder, axios));
