@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as authActions from '../../../store/actions/index';
 
 const Logout = (props) => {
-  useState(() => {
+  useEffect(() => {
     props.onLogout();
   });
 
