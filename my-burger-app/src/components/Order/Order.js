@@ -3,13 +3,17 @@ import React from 'react';
 import classes from './Order.module.css';
 
 const order = (props) => {
+
+  const {price, ingredients} = props;
+
   const ingredientsArray = [];
-  for (const ingredient in props.ingredients) {
+  
+  Object.keys(ingredients).forEach( ingredient => {
     ingredientsArray.push({
       name: ingredient,
       qty: props.ingredients[ingredient],
     });
-  }
+  });
 
   const style = {
     textTransform: 'capitalise',
@@ -22,16 +26,24 @@ const order = (props) => {
   const ingredientsOutput = ingredientsArray.map((ingredient) => {
     return (
       <span style={style} key={ingredient.name}>
-        {ingredient.name} ({ingredient.qty})
+        {ingredient.name}
+        {' '}
+        (
+        {ingredient.qty}
+        )
       </span>
     );
   });
 
   return (
     <div className={classes.Order}>
-      <p>Ingredients : {ingredientsOutput}</p>
       <p>
-        Price : <strong>{`USD ${props.price.toFixed(2)}`}</strong>{' '}
+        Ingredients :
+        {ingredientsOutput}
+      </p>
+      <p>
+        Price : 
+        <strong>{`USD ${price.toFixed(2)}`}</strong>
       </p>
     </div>
   );

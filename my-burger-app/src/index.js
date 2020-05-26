@@ -8,9 +8,10 @@ import thunk from 'redux-thunk';
 import burgerBuilderReducer from './store/reducers/burgerBuilder';
 import orderReducer from './store/reducers/order';
 import authReducer from './store/reducers/auth';
+import App from './App';
 
 import './index.css';
-import App from './App';
+
 import * as serviceWorker from './serviceWorker';
 
 const rootReducer = combineReducers({

@@ -15,14 +15,14 @@ import * as burgerBuilderActions from '../../store/actions/index';
 const BurgerBuilder = (props) => {
   const [purchasing, setPurchasing] = useState(false);
 
-  const { onInitIngredients } = props;
+  const { onInitIngredients, ingredients, error } = props;
 
   useEffect(() => {
     onInitIngredients();
   }, [onInitIngredients]);
 
-  const getPurchaseState = (ingredients) => {
-    const count = Object.values(ingredients).reduce((a, b) => a + b, 0);
+  const getPurchaseState = (ings) => {
+    const count = Object.values(ings).reduce((a, b) => a + b, 0);
     const purchaseState = count > 0;
     return purchaseState;
   };
@@ -46,14 +46,14 @@ const BurgerBuilder = (props) => {
     props.history.push('/checkout');
   };
 
-  const disabledInfo = { ...props.ingredients };
+  const disabledInfo = { ...ingredients };
   Object.keys(disabledInfo).forEach((type) => {
     disabledInfo[type] = disabledInfo[type] <= 0;
   });
 
-  let burger = props.error ? <p>Something went wrong!!</p> : <Spinner />;
+  let burger = error ? <p>Something went wrong!!</p> : <Spinner />;
   let orderSummary = null;
-  if (props.ingredients) {
+  if (ingredients) {
     burger = (
       <Aux>
         <Burger ingredients={props.ingredients} />

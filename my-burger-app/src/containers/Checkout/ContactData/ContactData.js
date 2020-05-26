@@ -12,6 +12,9 @@ import axios from '../../../Axios/instance1';
 import classes from './ContactData.module.css';
 
 const ContactData = (props) => {
+
+  const {loading} = props;
+
   const [orderForm, setOrderForm] = useState({
     name: {
       elementType: 'input',
@@ -131,12 +134,12 @@ const ContactData = (props) => {
       [fieldname]: newFieldValue,
     });
 
-    let formIsValid = true;
-    for (const field in orderForm) {
-      formIsValid = formIsValid && newOrderForm[field].valid;
-    }
+    let formValid = true;
+    Object.keys(orderForm).forEach( field => {
+      formValid = formValid && newOrderForm[field].valid;  
+    } );
     setOrderForm(newOrderForm);
-    setFormIsValid(formIsValid);
+    setFormIsValid(formValid);
   };
 
   const elements = Object.keys(orderForm).map((key) => {
@@ -168,7 +171,7 @@ const ContactData = (props) => {
     </form>
   );
 
-  if (props.loading) form = <Spinner />;
+  if (loading) form = <Spinner />;
 
   return <div className={classes.ContactData}>{form}</div>;
 };

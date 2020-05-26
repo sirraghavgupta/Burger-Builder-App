@@ -4,15 +4,17 @@ import Aux from '../../../hoc/Aux/Aux';
 import Button from '../../UI/Button/Button';
 
 const OrderSummary = (props) => {
-  const ingredientSummary = Object.entries(props.ingredients).map(
-    ([label, qty]) => {
-      return (
-        <li key={label}>
-          <span style={{ textTransform: 'capitalize' }}>{label}</span> : {qty}
-        </li>
-      );
-    }
-  );
+  const { ingredients, price, cancelled, continued } = props;
+
+  const ingredientSummary = Object.entries(ingredients).map(([label, qty]) => {
+    return (
+      <li key={label}>
+        <span style={{ textTransform: 'capitalize' }}>{label}</span>
+        :
+        {qty}
+      </li>
+    );
+  });
 
   return (
     <Aux>
@@ -22,16 +24,19 @@ const OrderSummary = (props) => {
       <ul>{ingredientSummary}</ul>
 
       <p>
-        <strong>Total price : {props.price.toFixed(2)}</strong>
+        <strong>
+          Total price :
+          {price.toFixed(2)}
+        </strong>
       </p>
 
       <p>Continue to Checkout?</p>
 
-      <Button clicked={props.cancelled} btnType="Success">
+      <Button clicked={cancelled} btnType="Success">
         CANCEL
       </Button>
 
-      <Button clicked={props.continued} btnType="Danger">
+      <Button clicked={continued} btnType="Danger">
         CONTINUE
       </Button>
     </Aux>

@@ -13,7 +13,7 @@ import burgerLogo from '../../assets/images/logo.png';
  * this image is required here. so, it provides the new path automatically.
  */
 
-const logo = (props) => {
+const logo = () => {
   return (
     <div className={classes.Logo}>
       <img src={burgerLogo} alt="My Burger" />

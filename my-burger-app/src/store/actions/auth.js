@@ -1,5 +1,6 @@
-import * as actionTypes from './actionTypes';
 import axios from 'axios';
+
+import * as actionTypes from './actionTypes';
 
 export const authStart = () => {
   return {
@@ -18,7 +19,26 @@ export const authSuccess = (token, userId) => {
 export const authFailed = (error) => {
   return {
     type: actionTypes.AUTH_FAILED,
-    error: error,
+    error,
+  };
+};
+
+export const authLogout = () => {
+  localStorage.removeItem('token');
+  localStorage.removeItem('expirationDate');
+  localStorage.removeItem('userId');
+
+  return {
+    type: actionTypes.AUTH_LOGOUT,
+  };
+};
+
+const checkAuthTimeout = (expirationTime) => {
+  console.log(expirationTime);
+  return (dispatch) => {
+    setTimeout(() => {
+      dispatch(authLogout());
+    }, expirationTime * 1000);
   };
 };
 
@@ -27,8 +47,8 @@ export const auth = (email, password, isSignup) => {
     dispatch(authStart());
 
     const authData = {
-      email: email,
-      password: password,
+      email,
+      password,
       returnSecureToken: true,
     };
 
@@ -64,29 +84,10 @@ export const auth = (email, password, isSignup) => {
   };
 };
 
-const checkAuthTimeout = (expirationTime) => {
-  console.log(expirationTime);
-  return (dispatch) => {
-    setTimeout(() => {
-      dispatch(authLogout());
-    }, expirationTime * 1000);
-  };
-};
-
-export const authLogout = () => {
-  localStorage.removeItem('token');
-  localStorage.removeItem('expirationDate');
-  localStorage.removeItem('userId');
-
-  return {
-    type: actionTypes.AUTH_LOGOUT,
-  };
-};
-
 export const setAuthRedirectPath = (path) => {
   return {
     type: actionTypes.SET_AUTH_REDIRECT_PATH,
-    path: path,
+    path,
   };
 };
 

@@ -12,6 +12,9 @@ import Aux from '../../hoc/Aux/Aux';
 import classes from './Auth.module.css';
 
 const Auth = (props) => {
+
+  const {error, isAuthenticated, loading} = props;
+
   const [controls, setControls] = useState({
     email: {
       elementType: 'input',
@@ -74,7 +77,7 @@ const Auth = (props) => {
   };
 
   const switchModeHandler = () => {
-    setIsSignup((isSignup) => !isSignup);
+    setIsSignup((prevSignupState) => !prevSignupState);
   };
 
   const elements = Object.keys(controls).map((key) => {
@@ -97,7 +100,7 @@ const Auth = (props) => {
   const spinner = <Spinner />;
 
   let authRedirect = null;
-  if (props.isAuthenticated) {
+  if (isAuthenticated) {
     // my short cut
     // if (props.buildingBurger) authRedirect = <Redirect to="/checkout" />;
     // else authRedirect = <Redirect to="/" />;
@@ -107,7 +110,7 @@ const Auth = (props) => {
   }
 
   let errorMessage = null;
-  if (props.error) {
+  if (error) {
     errorMessage = <p>{props.error.message}</p>;
   }
 
@@ -120,17 +123,18 @@ const Auth = (props) => {
 
         {formElements}
         {/* disabled = { !formIsValid } */}
-        <Button btnType="Success"> {isSignup ? 'Signup' : 'Signin'} </Button>
+        <Button btnType="Success"> 
+          {isSignup ? 'Signup' : 'Signin'}
+        </Button>
       </form>
 
       <Button clicked={switchModeHandler} btnType="Danger">
-        {' '}
-        SWITCH AUTH MODE{' '}
+        SWITCH AUTH MODE
       </Button>
     </Aux>
   );
 
-  return <div className={classes.Auth}>{props.loading ? spinner : form}</div>;
+  return <div className={classes.Auth}>{loading ? spinner : form}</div>;
 };
 
 const mapStateToProps = (state) => {

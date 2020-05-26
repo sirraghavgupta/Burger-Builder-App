@@ -8,10 +8,13 @@ const burger = (props) => {
   // prepare the ingredient components array from the state object.
   // keep in mind their quantity also.
 
-  let transformedIngredients = Object.entries(props.ingredients).map(
+  const {ingredients} = props;
+
+  let transformedIngredients = Object.entries(ingredients).map(
     ([name, quantity]) => {
       return Array(quantity)
         .fill(name)
+        // eslint-disable-next-line react/no-array-index-key
         .map((_, index) => <BurgerIngredient type={name} key={name + index} />);
     }
   );

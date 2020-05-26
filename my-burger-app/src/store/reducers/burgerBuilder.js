@@ -52,7 +52,7 @@ const setIngredients = (state, action) => {
   });
 };
 
-const fetchIngredientsFailed = (state, action) => {
+const fetchIngredientsFailed = (state) => {
   return updateObject(state, { error: true });
 };
 
@@ -68,7 +68,7 @@ const reducer = (state = initialState, action) => {
       return setIngredients(state, action);
 
     case actionTypes.FETCH_INGREDIENTS_FAILED:
-      return fetchIngredientsFailed(state, action);
+      return fetchIngredientsFailed(state);
 
     default:
       return state;

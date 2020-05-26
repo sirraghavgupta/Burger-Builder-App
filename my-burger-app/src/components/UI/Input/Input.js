@@ -3,13 +3,16 @@ import React from 'react';
 import classes from './Input.module.css';
 
 const input = (props) => {
+
+  const {valid, validation, touched, elementConfig, label} = props;
+
   let inputElement = null;
 
   let validationError = null;
 
   const inputClasses = [classes.InputElement];
 
-  if (!props.valid && props.validation && props.touched) {
+  if (!valid && validation && touched) {
     inputClasses.push(classes.Invalid);
 
     validationError = (
@@ -22,7 +25,7 @@ const input = (props) => {
       inputElement = (
         <input
           className={inputClasses.join(' ')}
-          {...props.elementConfig}
+          {...elementConfig}
           value={props.value}
           onChange={props.changed}
         />
@@ -33,7 +36,7 @@ const input = (props) => {
       inputElement = (
         <textarea
           className={inputClasses.join(' ')}
-          {...props.elementConfig}
+          {...elementConfig}
           value={props.value}
           onChange={props.changed}
         />
@@ -60,7 +63,7 @@ const input = (props) => {
       inputElement = (
         <input
           className={inputClasses.join(' ')}
-          {...props.elementConfig}
+          {...elementConfig}
           value={props.value}
           onChange={props.changed}
         />
@@ -69,7 +72,7 @@ const input = (props) => {
 
   return (
     <div className={classes.Input}>
-      <label className={classes.Label}>{props.label}</label>
+      <label className={classes.Label}>{label}</label>
       {inputElement}
       {validationError}
     </div>

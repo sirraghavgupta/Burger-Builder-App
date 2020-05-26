@@ -8,6 +8,9 @@ import SideDrawer from '../../components/Navigation/SideDrawer/SideDrawer';
 import classes from './Layout.module.css';
 
 const Layout = (props) => {
+
+  const {isAuthenticated, children} = props;
+
   const [showSideDrawer, setShowSideDrawer] = useState(false);
 
   const closeSideDrawerHandler = () => {
@@ -26,17 +29,17 @@ const Layout = (props) => {
   return (
     <Aux>
       <Toolbar
-        isAuthenticated={props.isAuthenticated}
+        isAuthenticated={isAuthenticated}
         toggleDrawer={toggleSideDrawerHandler}
       />
 
       <SideDrawer
-        isAuthenticated={props.isAuthenticated}
+        isAuthenticated={isAuthenticated}
         closeDrawer={closeSideDrawerHandler}
         showDrawer={showSideDrawer}
       />
 
-      <main className={classes.Content}>{props.children}</main>
+      <main className={classes.Content}>{children}</main>
     </Aux>
   );
 };

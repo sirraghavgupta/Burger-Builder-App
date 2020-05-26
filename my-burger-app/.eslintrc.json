@@ -1,5 +1,6 @@
 {
   "extends": ["airbnb", "prettier"],
+  "parser": "babel-eslint",
   "plugins": ["prettier"],
   "rules": {
     "semi": 2,
@@ -11,7 +12,21 @@
     "no-case-declarations": 0,
     "linebreak-style": 0,
     "class-methods-use-this": 0,
-    "func-names": 0
+    "func-names": 0,
+    "react/prop-types": [0],
+    "react/jsx-props-no-spreading": [0],
+    "jsx-a11y/label-has-associated-control" : 0,
+    "no-console": "off",
+    "react/button-has-type": [0]
     // "prettier/prettier": ["error"]
+  },
+  "globals": {
+    "localStorage": true,
+    "fetch": true
+  },
+  "env": {
+    // "jest/globals": true,
+    "browser": true,
+    "node": true
   }
 }

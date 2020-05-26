@@ -11,9 +11,9 @@ export default (axios) => {
       setError(null);
       return request;
     },
-    (error) => {
+    (err) => {
       console.log('inside request failure method');
-      return Promise.reject(error);
+      return Promise.reject(err);
     }
   );
 
@@ -22,10 +22,10 @@ export default (axios) => {
       console.log('inside the success response method');
       return response;
     },
-    (error) => {
+    (err) => {
       console.log('inside the faliure response block');
-      setError(error);
-      return Promise.reject(error);
+      setError(err);
+      return Promise.reject(err);
     }
   );
 
